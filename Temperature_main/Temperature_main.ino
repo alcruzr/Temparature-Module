@@ -12,9 +12,9 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 float ref_voltage = 1.1;
 
-int green_pin = 12;
-int blue_pin = 11;
-int red_pin = 10;
+int green_pin = 11;
+int blue_pin = 10;
+int red_pin = 12;
 
 int temp_c_pin = A0;
 int temp_f_pin = A1;
@@ -26,8 +26,34 @@ float temp_c;
 float temp_f;
 
 
+float readTempC(){
+  float val1 = 0;
+  float val2 = 0;
+  int readings = 80;
+  for (int i = 0; i < readings; i++){
+    val2 = analogRead(temp_c_pin);
+    val1 = val1 + val2;
+    delay (1);
+  }
+  val1 = val1/readings;
+  return val1;
+}
+
+float readTempF(){
+  float val3 = 0;
+  float val4 = 0;
+  int readings = 80;
+  for (int i = 0; i < readings; i++){
+    val4 = analogRead(temp_f_pin);
+    val3 = val3 + val4;
+    delay (1);
+  }
+  val3 = val3/readings;
+  return val3;
+}
+
+
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
   
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C); // Address 0x3C for 128x64
@@ -58,24 +84,39 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  temp_c_value = analogRead(temp_c_pin);
-  temp_f_value = analogRead(temp_f_pin);
+  temp_c_value = readTempC();
+  temp_f_value = readTempF();
 
-  temp_c = (temp_c_value * ref_voltage) / 1024.0; 
-  temp_f = (temp_f_value * ref_voltage) / 1024.0; 
+  temp_c = ((temp_c_value * ref_voltage) / 1024.0) * 100; 
+  temp_f = ((temp_f_value * ref_voltage) / 1024.0) * 100; 
 
   display.clearDisplay();
   display.setCursor(0, 0);     // Start at top-left corner
 
-  display.print(temp_c * 100);
+  display.print(temp_c);
   display.write(248);
   display.println("C");
-  display.print(temp_f * 100);
+  display.print(temp_f);
   display.write(248);
   display.println("F");
   display.display();
 
-  delay(500);
+  if(temp_f >= 80){
+    digitalWrite(green_pin, 0);
+    digitalWrite(blue_pin, 0);
+    digitalWrite(red_pin, 1);
+  }
+  else if(temp_f <= 60){
+    digitalWrite(green_pin, 0);
+    digitalWrite(blue_pin, 1);
+    digitalWrite(red_pin, 0);
+  }
+  else{
+    digitalWrite(green_pin, 1);
+    digitalWrite(blue_pin, 0);
+    digitalWrite(red_pin, 0);
+  }
+
+  delay(10);
 
 }
