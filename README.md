@@ -1,4 +1,6 @@
 # Temparature-Module
+![PCB-Front](https://github.com/alcruzr/Temparature-Module/assets/87552616/6c34e60f-f3cb-4130-8d9b-7562a5bdf470)  ![PCB-Back](https://github.com/alcruzr/Temparature-Module/assets/87552616/20d685b5-eb02-4ad3-b97e-49fca263c95e)
+
 
 This is a temperature sensor module that implements the LM35 temp. sensor and displays the temperature on an OLED screen that is controlled by an Arduino Nano. The module is powered by a 9V battery that is stepped down to 6V, via a linear regulator, to power all components. The temperature from the LM35 is given in C, which is then converted to F by a series of opamp circuits. 
 
