@@ -10,7 +10,7 @@
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-float ref_voltage = 1.1;
+float ref_voltage = 5;
 
 int green_pin = 11;
 int blue_pin = 10;
@@ -24,7 +24,6 @@ float temp_f_value;
 
 float temp_c;
 float temp_f;
-
 
 float readTempC(){
   float val1 = 0;
@@ -52,7 +51,6 @@ float readTempF(){
   return val3;
 }
 
-
 void setup() {
   Serial.begin(115200);
   
@@ -65,7 +63,7 @@ void setup() {
   display.display();
   display.setTextSize(3);
   
-  analogReference(INTERNAL);
+  analogReference(DEFAULT);
 
   pinMode(temp_f_pin, INPUT);
   pinMode(temp_c_pin, INPUT);
@@ -79,16 +77,14 @@ void setup() {
   digitalWrite(red_pin, 1);
 
   delay(3000);
-  
-  
 }
 
 void loop() {
   temp_c_value = readTempC();
   temp_f_value = readTempF();
 
-  temp_c = ((temp_c_value * ref_voltage) / 1024.0) * 100; 
-  temp_f = ((temp_f_value * ref_voltage) / 1024.0) * 100; 
+  temp_c = ((temp_c_value * ref_voltage) / 1023.0) * 100; 
+  temp_f = ((temp_f_value * ref_voltage) / 1023.0) * 100; 
 
   display.clearDisplay();
   display.setCursor(0, 0);     // Start at top-left corner
@@ -116,7 +112,5 @@ void loop() {
     digitalWrite(blue_pin, 0);
     digitalWrite(red_pin, 0);
   }
-
   delay(10);
-
 }
