@@ -12,3 +12,6 @@ The equation to convert from Celsius to Fahrenheit is: F=(C x 9/5) + 32
 
 The first OPAMP will be configured as a non-inverting amplifier and have the gain set to 9/5 perform the multiplication and the second OPAMP will be configured as a non-inverting summer circuit which will add the value of 32.
 
+The red, green, and blue leds are used for visual indication of different temperature ranges. red: temp > 80F, green: 60F < temp < 70F, blue: temp < 60F
+
+PCB gerber zip file and BOM for all parts are also included. 
